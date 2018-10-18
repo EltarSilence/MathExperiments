@@ -6,6 +6,8 @@
 <body>
 <?php
 
+	#FUNZIONI BASSO LIVELLO
+
 	function containsDecimal($value) {
 	    return ((strpos($value, ".")!==false))?true:false;
 	}
@@ -13,7 +15,7 @@
 	function getFactorial($n) { 
 	    return ($n == 1 || $n == 0)?1:$n * getFactorial($n - 1);
 	} 
-	
+
 	function isPrime($n) {
 	    if ($n <= 1) {
 	        return false;
@@ -27,6 +29,22 @@
 	    }
 	    return $isPrime;
 	}
+
+	#FUNZIONI DI SUCCESSIONI
+
+	function fibonacci($n){
+	    return round(((5 ** .5 + 1) / 2) ** $n / 5 ** .5);
+	}
+
+	function padovan($n) {
+	    if($n==0) return 0;
+	    if ($n < 4) { 
+	    	return 1;
+	    }
+	    else return padovan($n - 2) + padovan($n - 3); 
+	}
+
+	#SUCCESSIONI DI INTERI
 
 	function getDivisors($n, $mode) {
 		//MODE
@@ -53,7 +71,6 @@
 			    return $divisors;
 				break;
 		}
-		
 	}
 
 	function getSumOfDivisors($n) {
@@ -77,6 +94,11 @@
 			return false;
 		}
 		return pow($n, 1/$order);
+	}
+
+	function isRefactorable($n){
+		$n_div = count(getDivisors($n, 'DEFAULT'));
+		return ($n%$n_div==0)?true:false;
 	}
 
 	function isBlumInt($n) { 
@@ -121,6 +143,13 @@
 		return ($n < getSumOfDivisors($n))?true:false;
 	}
 
+	function isDeficient($n) {
+		return ($n > getSumOfDivisors($n))?true:false;
+	}	
+
+	function isPerfect($n) {
+		return ($n==getSumOfDivisors($n))?true:false;
+	}
 
 	/* BUGGED */ function isHighlyComposite($n) {
 		if ($n > 0){
@@ -134,7 +163,6 @@
 		return true;
 	}
 
-
 	function numSquareSum($n) { 
 	    $squareSum = 0; 
 	    while ($n) { 
@@ -144,7 +172,6 @@
 	    return $squareSum; 
 	} 
   
-
 	function isHappy($n) { 
 	    $slow; $fast; 
 	    $slow = $n; 
@@ -201,9 +228,116 @@
 	    return false; 
 	} 
 
+	# ALGORITMI DI RICERCA
+	/* RICERCA LINEARE
+		Complessita: O(n)
+	*/
+	function linearSearch($arr, $x) { 
+	    for ($i = 0; $i < count($arr); $i++) 
+	        if ($arr[$i] == $x) 
+	        return $i; 
+	    return -1; 
+	}
+
+	/* RICERCA BINARIA
+		Complessita: O(log(n))		
+	*/
+	function binarySearch($arr, $l=0, $x) {
+		$r = count($arr)-1;
+		if ($r >= $l) { 
+	        $mid = $l + ($r - $l) / 2; 
+	  
+	        if ($arr[$mid] == $x)  
+	            return floor($mid); 
+	  
+	        if ($arr[$mid] > $x)  
+	            return binarySearch($arr, $l, $mid - 1, $x); 
+	  
+	        return binarySearch($arr, $mid + 1, $r, $x); 
+		} 
+		return -1; 
+	} 
+
+	/* RICERCA A SALTI
+		Complessita: O(sqrt(n))
+	*/
+	function jumpSearch($arr, $x) { 
+		$n = sizeof($arr) / sizeof($arr[0]);
+	    $step = sqrt($n); 
+	    $prev = 0; 
+	    while ($arr[min($step, $n)-1] < $x) { 
+	        $prev = $step; 
+	        $step += sqrt($n); 
+	        if ($prev >= $n) 
+	            return -1; 
+	    } 
+	    while ($arr[$prev] < $x) { 
+	        $prev++; 
+	  
+	        if ($prev == min($step, $n)) 
+	            return -1; 
+	    } 
+	    if ($arr[$prev] == $x) 
+	        return $prev; 
+	  
+	    return -1; 
+	} 
+
+	#ALGORITMI DI ORDINAMENTO
+
+	function isSorted ($arr) {
+		return ($arr==sort($arr)?true:false);
+    }
+
+	/* BUBBLE SORT
+		Complessita: O(n^2)
+	*/
+	function bubbleSort(&$arr) { 
+	    $n = sizeof($arr);
+	    for($i = 0; $i < $n; $i++) { 
+	        for ($j = 0; $j < $n - $i - 1; $j++) { 
+	            if ($arr[$j] > $arr[$j+1]) { 
+	                $t = $arr[$j]; 
+	                $arr[$j] = $arr[$j+1]; 
+	                $arr[$j+1] = $t; 
+	            } 
+	        } 
+	    }
+	    return $arr; 
+	} 
+
+	/* INSERTION SORT
+		Complessita: O(2n)
+	*/
+	function insertionSort(&$arr) {
+		$n = sizeof($arr); 
+	    for ($i = 1; $i < $n; $i++) 
+	    { 
+	        $key = $arr[$i]; 
+	        $j = $i-1;
+	        while ($j >= 0 && $arr[$j] > $key) 
+	        { 
+	            $arr[$j + 1] = $arr[$j]; 
+	            $j = $j - 1; 
+	        } 
+	        $arr[$j + 1] = $key; 
+	    }
+	    return $arr;
+	} 
+
+	/* STUPID SORT
+		Complessita: O(n*n!)
+	*/
+	function stupidSort($arr){
+		while(!isSorted($arr)){
+			$arr=shuffle($arr);
+		}
+		return $arr;
+	}
 #----------
-for ($i=1; $i < 100; $i++) { 
-	echo $i.' -> '.insert_function_here($i).'<br>';
+
+for ($i=1; $i <= 5000; $i++) { 
+	echo $i.' -> '.($i).'<br>';
 }
 	
 
