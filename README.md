@@ -9,7 +9,7 @@ Functions included in 1.0:
 * Perfect square, cube and even more
 * Blum Integer number
 * Repeatable number
-* Abuntan number
+* Abundant number
 * Highly Composite number (Bugged)
 * Sum of squares of the digits
 * Happy number
