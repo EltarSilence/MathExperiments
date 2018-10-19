@@ -1,6 +1,16 @@
 # MathExperiments
 A cool PHP collection of functions with allows you to discover a quite hidden branch of maths.
 
+Functions included in 1.1:
+* Fibonacci succession
+* Padovan succession
+* Refactorable number
+* Deficient number
+* Perfect number
+* Array search algorithm (Linear Search, Binary Seatch, Jump Search)
+* Array sorting algorithm (Bubble Sort, Insertion Sort, Stupid Sort)
+
+---
 Functions included in 1.0:
 * Contains Decimal
 * Factorial calculation
